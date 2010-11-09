@@ -1,10 +1,11 @@
 require 'process'
+require "queue"
 require 'support/string_extend'
 
 class Guide
   include Jasoet
   class Config
-    @@actions = ['daftar', 'tambah', 'fcfs', 'sjfp' 'keluar']
+    @@actions = ['daftar', 'tambah', 'fcfs', 'sjfp', 'keluar']
 
     def self.actions;
       @@actions;
@@ -51,11 +52,83 @@ class Guide
         list(args)
       when 'tambah'
         add
+      when 'fcfs'
+        fcfs
       when 'keluar'
         return :quit
       else
         puts "\nPerintah tidak Dikenali.\n"
     end
+  end
+
+  def fcfs
+
+
+    output_action_header "First Come First Serve"
+
+    total    = Process.total_burst_time
+    procs    = Process.sort(:arrival)
+
+
+    Thread.new {
+      sleep(0.5)
+      puts ""
+      puts "-"*63
+      print "|"+"Detik".ljust(5)
+      print "|"+"Tereksekusi".ljust(11)
+      print "|"+"Sisa Burst".ljust(10)
+      print "|"+"Proses Datang".ljust(13)
+      print "|"+"Antrian".ljust(18) + "|\n"
+      puts "|"+ "-"*61+"|"
+      antrian  = Queue.new
+      proc_cur = nil
+      (total+1).times do |i|
+
+        #mengambil seluruh proses yang datang pada detik tertentu
+        proc_arrv     = procs.select { |v|
+          v.arrival.to_i == i
+        }
+
+
+        #proses yg datang dimasukkan dalam antrian
+        unless proc_arrv.empty?
+          proc_arrv.each { |v|
+            antrian.enq v
+          }
+        end
+
+        proc_arrv_pid = proc_arrv.collect { |v|
+          v.pid
+        }
+
+        antrian_pid   = antrian.collect { |v|
+          v.pid
+        }
+
+        unless proc_cur.nil?
+          proc_cur.burst_remaining -= 1
+        end
+
+        print "|"+i.to_s.rjust(5)
+        print "|"+"#{proc_cur.nil? ? '-' : proc_cur.pid}".ljust(11)
+        print "|"+"#{proc_cur.nil? ? '-' : proc_cur.burst_remaining}".rjust(10)
+        print "|"+"#{proc_arrv_pid.inspect unless proc_arrv_pid.empty?}".ljust(13)
+        print "|"+"#{antrian_pid.inspect unless antrian.empty?}".ljust(18) + "|\n"
+        sleep(0.1)
+
+
+        if proc_cur.nil?
+          proc_cur = antrian.deq
+          puts "|"+ "-"*61+"|"
+        elsif (proc_cur.burst_remaining.to_i == 0)
+          proc_cur = antrian.deq
+          puts "|"+ "-"*61+"|"
+        end
+      end
+      puts "-"*63
+      puts "Tekan ENTER untuk melanjutkan"
+    }
+
   end
 
   def list(args=[])
@@ -65,19 +138,19 @@ class Guide
 
     output_action_header("Daftar Processs")
 
-    procs      = Process.saved_process
-    procs.sort! do |r1, r2|
-      case sort_order
-        when 'proses'
-          r1.pid.downcase <=> r2.pid.downcase
-        when 'burst'
-          r1.burst.to_i <=> r2.burst.to_i
-        when 'prioritas'
-          r1.priority.to_i <=> r2.priority.to_i
-        when 'kedatangan'
-          r1.arrival.to_i <=> r2.arrival.to_i
-      end
+    procs      = []
+    case sort_order
+      when 'proses'
+        procs = Process.sort(:pid)
+      when 'burst'
+        procs = Process.sort(:burst)
+      when 'prioritas'
+        procs = Process.sort(:priority)
+      when 'kedatangan'
+        procs = Process.sort(:arrival)
     end
+
+
     output_process_table(procs)
     puts "Urutkan Menggunakan : 'daftar kedatangan'"
     puts "Parameter yang dapat digunakan ["+ parameters.join("/")+"]"
@@ -111,6 +184,7 @@ class Guide
   end
 
   def output_process_table(procs = [])
+    puts "-"*46
     print "|"+"Proses".ljust(6)
     print "|"+"Burst Time".ljust(10)
     print "|"+"Prioritas".ljust(9)

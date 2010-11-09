@@ -1,6 +1,6 @@
 module Jasoet
   class Process
-    attr_accessor :pid, :arrival, :burst, :priority, :burst_remaining, :active
+    attr_accessor :pid, :arrival, :burst, :priority, :burst_remaining, :active, :executed
 
     @@filepath = nil
 
@@ -54,14 +54,16 @@ module Jasoet
       @pid             = args[:pid] || ""
       @arrival         = args[:arrival] || ""
       @burst           = args[:burst] || ""
-      @burst_remaining = @burst
+      @burst_remaining = @burst.to_i
+      @executed        = 0
       @active          = true
       @priority        = args[:priority] || ""
     end
 
     def import_line(line)
-      line_array = line.split(",")
+      line_array       = line.split(",")
       @pid, @arrival, @burst, @priority = line_array
+      @burst_remaining = @burst.to_i
       return self
     end
 
@@ -71,6 +73,31 @@ module Jasoet
         file.puts "#{[@pid, @arrival, @burst, @priority].join(",")}\n"
       end
       return true
+    end
+
+    def self.total_burst_time()
+      procs = sort(:arrival)
+      sum   = procs.inject(0) do |sums, pro|
+        sums + pro.burst.to_i
+      end
+      sum
+    end
+
+    def self.sort(sort_order)
+      procs      = Process.saved_process
+      procs.sort! do |r1, r2|
+        case sort_order
+          when :pid
+            r1.pid.downcase <=> r2.pid.downcase
+          when :burst
+            r1.burst.to_i <=> r2.burst.to_i
+          when :priority
+            r1.priority.to_i <=> r2.priority.to_i
+          when :arrival
+            r1.arrival.to_i <=> r2.arrival.to_i
+        end
+      end
+      return procs
     end
 
     def self.input_prompt(str, min, max)
