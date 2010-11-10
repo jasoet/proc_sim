@@ -83,6 +83,18 @@ module Jasoet
       sum
     end
 
+    def self.average_wait_time(procs=[])
+
+      count = procs.length
+
+      sum   = procs.inject(0) do |sums, pro|
+        sums + (pro.executed.to_i - pro.arrival.to_i)
+      end
+
+      return sum.to_f / count.to_f
+    end
+
+    
     def self.sort(sort_order)
       procs      = Process.saved_process
       procs.sort! do |r1, r2|
@@ -91,6 +103,8 @@ module Jasoet
             r1.pid.downcase <=> r2.pid.downcase
           when :burst
             r1.burst.to_i <=> r2.burst.to_i
+          when :burst_remaining
+            r1.burst_remaining.to_i <=> r2.burst_remaining.to_i
           when :priority
             r1.priority.to_i <=> r2.priority.to_i
           when :arrival
