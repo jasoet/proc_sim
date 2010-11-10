@@ -82,7 +82,7 @@ class Guide
       puts "|"+ "-"*51+"|"
       antrian  = []
       proc_cur = nil
-      (total).times do |i|
+      (total+1).times do |i|
 
         #mengambil seluruh proses yang datang pada detik tertentu
         proc_arrv     = procs.select { |v|
@@ -97,10 +97,6 @@ class Guide
           }
         end
 
-        antrian.sort! do |r1, r2|
-          r1.burst_remaining.to_i <=> r2.burst_remaining.to_i
-        end
-
 
         proc_arrv_pid = proc_arrv.collect { |v|
           v.pid
@@ -110,16 +106,22 @@ class Guide
           v.pid+"=>"+v.burst_remaining.to_s
         }
 
-        proc_cur      = antrian.first
-        unless proc_cur.nil?
-          proc_cur.burst_remaining -= 1
-        end
 
-        print "|"+(i+1).to_s.rjust(5)
+        print "|"+i.to_s.rjust(5)
         print "|"+"#{proc_cur.nil? ? '-' : proc_cur.pid}".ljust(12)
         print "|"+"#{proc_arrv_pid.inspect unless proc_arrv_pid.empty?}".ljust(13)
         print "|"+"#{antrian_pid.inspect unless antrian.empty?}".ljust(18) + "|\n"
         sleep(0.1)
+
+        unless proc_cur.nil?
+          proc_cur.burst_remaining -= 1
+        end
+
+        antrian.sort! do |r1, r2|
+          r1.burst_remaining.to_i <=> r2.burst_remaining.to_i
+        end
+
+        proc_cur      = antrian.first
 
 
         if proc_cur.nil?
