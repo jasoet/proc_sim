@@ -2,12 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b550e1e4-36e9-4247-92c6-d34f6799c79a" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/queue.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/lib/queue.rb" afterPath="$PROJECT_DIR$/lib/jqueue.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/guide.rb" afterPath="$PROJECT_DIR$/lib/guide.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/process.rb" afterPath="$PROJECT_DIR$/lib/process.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/process.txt" afterPath="$PROJECT_DIR$/process.txt" />
     </list>
     <ignored path="Process.iws" />
@@ -35,43 +32,7 @@
       <file leaf-file-name="guide.rb" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lib/guide.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="123" column="32" selection-start="2832" selection-end="2832" vertical-scroll-proportion="0.4703833">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="process.txt" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/process.txt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="1" column="4" selection-start="13" selection-end="13" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="process.rb" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib/process.rb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="2" column="69" selection-start="84" selection-end="99" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="stack.rb" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib/stack.rb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="queue.rb" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib/queue.rb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="1" column="8" selection-start="22" selection-end="22" vertical-scroll-proportion="0.0">
+            <state line="120" column="10" selection-start="2613" selection-end="2613" vertical-scroll-proportion="-2.6560936">
               <folding />
             </state>
           </provider>
@@ -279,7 +240,7 @@
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32854864" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24960127" sideWeight="0.67145133" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24960127" sideWeight="0.67145133" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
@@ -345,6 +306,13 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/lib/jqueue.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1" column="11" selection-start="23" selection-end="28" vertical-scroll-proportion="0.025041737">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/lib/stack.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
@@ -352,28 +320,21 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/process.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="69" selection-start="84" selection-end="99" vertical-scroll-proportion="0.0">
+        <state line="2" column="89" selection-start="111" selection-end="119" vertical-scroll-proportion="0.050083473">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/process.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1" column="4" selection-start="13" selection-end="13" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/queue.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1" column="8" selection-start="22" selection-end="22" vertical-scroll-proportion="0.0">
+        <state line="5" column="9" selection-start="57" selection-end="57" vertical-scroll-proportion="0.12520868">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/guide.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="123" column="32" selection-start="2832" selection-end="2832" vertical-scroll-proportion="0.4703833">
+        <state line="120" column="10" selection-start="2613" selection-end="2613" vertical-scroll-proportion="-2.6560936">
           <folding />
         </state>
       </provider>

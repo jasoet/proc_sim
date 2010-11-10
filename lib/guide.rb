@@ -1,5 +1,5 @@
 require 'process'
-require "queue"
+require "jqueue"
 require 'support/string_extend'
 
 class Guide
@@ -73,14 +73,13 @@ class Guide
     Thread.new {
       sleep(0.5)
       puts ""
-      puts "-"*63
+      puts "-"*53
       print "|"+"Detik".ljust(5)
-      print "|"+"Tereksekusi".ljust(11)
-      print "|"+"Sisa Burst".ljust(10)
+      print "|"+"Tereksekusi".ljust(12)
       print "|"+"Proses Datang".ljust(13)
       print "|"+"Antrian".ljust(18) + "|\n"
-      puts "|"+ "-"*61+"|"
-      antrian  = Queue.new
+      puts "|"+ "-"*51+"|"
+      antrian  = []
       proc_cur = nil
       (total+1).times do |i|
 
@@ -93,7 +92,7 @@ class Guide
         #proses yg datang dimasukkan dalam antrian
         unless proc_arrv.empty?
           proc_arrv.each { |v|
-            antrian.enq v
+            antrian << v
           }
         end
 
@@ -110,22 +109,57 @@ class Guide
         end
 
         print "|"+i.to_s.rjust(5)
-        print "|"+"#{proc_cur.nil? ? '-' : proc_cur.pid}".ljust(11)
-        print "|"+"#{proc_cur.nil? ? '-' : proc_cur.burst_remaining}".rjust(10)
+        print "|"+"#{proc_cur.nil? ? '-' : proc_cur.pid}".ljust(12)
         print "|"+"#{proc_arrv_pid.inspect unless proc_arrv_pid.empty?}".ljust(13)
         print "|"+"#{antrian_pid.inspect unless antrian.empty?}".ljust(18) + "|\n"
         sleep(0.1)
 
 
         if proc_cur.nil?
-          proc_cur = antrian.deq
-          puts "|"+ "-"*61+"|"
+          proc_cur         = antrian.shift
+
+          puts "Detik ke #{i} =>  #{proc_cur.pid.to_s} Dimulai".center(53)
+
+          unless proc_cur.nil?
+            proc_updated     = procs.select { |v|
+              v.pid == proc_cur.pid
+            }
+
+            proc_updated.each { |v|
+              v.executed = i
+            }
+          end
         elsif (proc_cur.burst_remaining.to_i == 0)
-          proc_cur = antrian.deq
-          puts "|"+ "-"*61+"|"
+
+          ended            = proc_cur.pid.to_s
+
+          proc_cur         = antrian.shift
+
+          if proc_cur.nil?
+            puts "Detik ke #{i} => #{ended} Berakhir.".center(53)
+          else
+            puts "Detik ke #{i} => #{ended} Berakhir, #{proc_cur.pid.to_s} Dimulai".center(53)
+          end
+
+
+          unless proc_cur.nil?
+            proc_updated     = procs.select { |v|
+              v.pid == proc_cur.pid
+            }
+
+            proc_updated.each { |v|
+              v.executed = i
+            }
+          end
+
+
         end
       end
-      puts "-"*63
+
+
+      puts "-"*53
+      output_action_header "rangkuman"
+      output_process_table_executed(procs)
       puts "Tekan ENTER untuk melanjutkan"
     }
 
@@ -199,6 +233,28 @@ class Guide
     end
     puts "Data Kosong" if procs.empty?
     puts "-" * 46
+  end
+
+  def output_process_table_executed(procs = [])
+    puts "-"*76
+    print "|"+"Proses".ljust(6)
+    print "|"+"Burst Time".ljust(10)
+    print "|"+"Prioritas".ljust(9)
+    print "|"+"Waktu Kedatangan".ljust(16)
+    print "|"+"Waktu Dieksekusi".ljust(16)
+    print "|"+"Waktu Tunggu".ljust(12) + "|\n"
+    puts "-"*76
+    procs.each do |pro|
+      line  = "|" << pro.pid.rjust(6)
+      line << "|" + pro.burst.to_s.rjust(10)
+      line << "|" + pro.priority.to_s.rjust(9)
+      line << "|" + pro.arrival.to_s.rjust(16)
+      line << "|" +pro.executed.to_s.rjust(16)
+      line << "|" +(pro.executed.to_i - pro.arrival.to_i).to_s.rjust(12)+"|"
+      puts line
+    end
+    puts "Data Kosong" if procs.empty?
+    puts "-" * 76
   end
 
 end

@@ -1,5 +1,5 @@
 module Jasoet
-  class Queue
+  class JQueue
 
     def initialize
       @store = []
